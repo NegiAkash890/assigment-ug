@@ -17,6 +17,15 @@
     "comma-dangle": [0, "always-multiline"],
     "linebreak-style": 0,
     "react/react-in-jsx-scope": 0,
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "import/no-extraneous-dependencies": [
+      "warning",
+      {
+        "devDependencies": false,
+        "optionalDependencies": false,
+        "peerDependencies": false,
+        "packageDir": "./"
+      }
+    ]
   }
 }
