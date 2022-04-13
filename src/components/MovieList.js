@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiTrash, FiEye } from 'react-icons/fi';
 import { BsPencilSquare } from 'react-icons/bs';
 
@@ -16,24 +16,46 @@ import {
   Text,
   Button
 } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteMovieById, fetchMovieById } from '../redux/actions/movieActions';
+import UpdateModal from './UpdateModal';
+import InfoModal from './InfoModal';
 
 function MovieList() {
-  const items = useSelector((state) => state.movies.movies);
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.movies.filteredMovies);
+  const [modalView, setModalView] = useState(false);
+  const [movieId, setMovieId] = useState(null);
 
+  const updateView = (value) => {
+    setModalView(value);
+  };
   const handleClick = (e) => {
     if (e.target.nodeName === 'BUTTON') {
-      console.log(e.target.dataset);
+      if (e.target.dataset.action === 'delete') {
+        dispatch(deleteMovieById(e.target.dataset.imdbid));
+      } else if (e.target.dataset.action === 'edit') {
+        setMovieId(e.target.dataset.imdbid);
+        updateView(true);
+      } else if (e.target.dataset.action === 'details') {
+        dispatch(fetchMovieById(e.target.dataset.imdbid));
+      }
     }
   };
   return (
     <Box display="flex" flexDirection="column" minW="400px" p={10}>
+      <UpdateModal
+        mt={10}
+        view={modalView}
+        updateView={updateView}
+        movieId={movieId}
+      />
+      <InfoModal mt={10} view={modalView} updateView={updateView} />
       <Flex justifyContent="space-between" m={3} mt={10}>
-        <Heading size="md">Movie List</Heading>
-        <Text>
-          Showing 0 of {items.length}
-          results
-        </Text>
+        <Heading size="md" mt={10}>
+          Movie List
+        </Heading>
+        <Text mt={10}>Showing 0 of {items.length} results</Text>
       </Flex>
       <TableContainer shadow="lg" rounded="md">
         <Table size="sm" variant="simple">
@@ -104,7 +126,7 @@ function MovieList() {
                     alignItems="center"
                     fontSize="xs"
                     fontWeight="light"
-                    data-action="delete"
+                    data-action="edit"
                     gap={2}
                     size="xs"
                     _hover={{
