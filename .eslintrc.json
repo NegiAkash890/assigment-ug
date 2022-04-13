@@ -19,13 +19,14 @@
     "react/react-in-jsx-scope": 0,
     "object-curly-newline": "off",
     "import/no-extraneous-dependencies": [
-      "warning",
+      0,
       {
         "devDependencies": false,
         "optionalDependencies": false,
         "peerDependencies": false,
         "packageDir": "./"
       }
-    ]
+    ],
+    "react/jsx-one-expression-per-line": 0
   }
 }

@@ -11,10 +11,12 @@ import {
 function Header() {
   return (
     <Flex
+      bg="white"
+      position="fixed"
+      zIndex={100}
       gap={2}
       alignItems="flex-end"
       shadow="lg"
-      my={4}
       rounded="md"
       w="100%"
       display="flex"
