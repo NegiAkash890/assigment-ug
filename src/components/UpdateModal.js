@@ -20,7 +20,7 @@ export default function VerticallyCenterModal({ view, updateView, movieId }) {
   const [isError, setIsError] = useState(false);
   const title = useRef('');
   const updateMovieTitle = () => {
-    const pattern = /^([a-zA-Z0-9]+)$/;
+    const pattern = /^([a-zA-Z0-9 ]+)$/;
     if (pattern.test(title.current.value)) {
       const data = { movieId, title: title.current.value };
       dispatch(updateMovieById(data));
