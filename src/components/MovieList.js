@@ -24,11 +24,13 @@ import InfoModal from './InfoModal';
 function MovieList() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.movies.filteredMovies);
-  const [modalView, setModalView] = useState(false);
+  const [modalView, setModalView] = useState([false, false]);
   const [movieId, setMovieId] = useState(null);
 
-  const updateView = (value) => {
-    setModalView(value);
+  const updateView = (value, i) => {
+    const modalState = [...modalView];
+    modalState[i] = value;
+    setModalView(modalState);
   };
   const handleClick = (e) => {
     if (e.target.nodeName === 'BUTTON') {
@@ -36,9 +38,10 @@ function MovieList() {
         dispatch(deleteMovieById(e.target.dataset.imdbid));
       } else if (e.target.dataset.action === 'edit') {
         setMovieId(e.target.dataset.imdbid);
-        updateView(true);
+        updateView(true, 0);
       } else if (e.target.dataset.action === 'details') {
         dispatch(fetchMovieById(e.target.dataset.imdbid));
+        updateView(true, 1);
       }
     }
   };
@@ -46,11 +49,11 @@ function MovieList() {
     <Box display="flex" flexDirection="column" minW="400px" p={10}>
       <UpdateModal
         mt={10}
-        view={modalView}
+        view={modalView[0]}
         updateView={updateView}
         movieId={movieId}
       />
-      <InfoModal mt={10} view={modalView} updateView={updateView} />
+      <InfoModal mt={10} view={modalView[1]} updateView={updateView} />
       <Flex justifyContent="space-between" m={3} mt={10}>
         <Heading size="md" mt={10}>
           Movie List
@@ -91,7 +94,8 @@ function MovieList() {
                     data-action="details"
                     fontSize="xs"
                     variant="unstyled"
-                    gap={2}
+                    gap={1}
+                    leftIcon={<FiEye />}
                     fontWeight="light"
                     _hover={{
                       cursor: 'Pointer',
@@ -99,7 +103,7 @@ function MovieList() {
                       color: 'blue'
                     }}
                   >
-                    <FiEye /> Details
+                    Details
                   </Button>
                   <Button
                     d="flex"
@@ -109,15 +113,16 @@ function MovieList() {
                     fontSize="xs"
                     fontWeight="light"
                     data-action="delete"
-                    gap={2}
+                    gap={1}
                     size="xs"
+                    leftIcon={<FiTrash />}
                     _hover={{
                       cursor: 'Pointer',
                       textDecoration: 'underline',
                       color: 'red'
                     }}
                   >
-                    <FiTrash /> Delete
+                    Delete
                   </Button>
                   <Button
                     d="flex"
@@ -127,7 +132,8 @@ function MovieList() {
                     fontSize="xs"
                     fontWeight="light"
                     data-action="edit"
-                    gap={2}
+                    gap={1}
+                    leftIcon={<BsPencilSquare />}
                     size="xs"
                     _hover={{
                       cursor: 'Pointer',
@@ -135,7 +141,7 @@ function MovieList() {
                       color: 'red'
                     }}
                   >
-                    <BsPencilSquare /> Edit
+                    Edit
                   </Button>
                 </Td>
               </Tr>

@@ -2,6 +2,7 @@ import {
   DELETE_MOVIE,
   FETCH_MOVIES,
   FETCH_MOVIE_ID,
+  REMOVE_SELECTED_MOVIE,
   UPDATE_MOVIE
 } from '../constants/constants';
 
@@ -22,6 +23,10 @@ export const fetchMovieById = (id) => async (dispatch) => {
   dispatch({ type: FETCH_MOVIE_ID, payload: data });
 };
 
+export const removeSelectedMovie = () => ({
+  type: REMOVE_SELECTED_MOVIE,
+  payload: {}
+});
 export const deleteMovieById = (id) => ({
   type: DELETE_MOVIE,
   payload: id

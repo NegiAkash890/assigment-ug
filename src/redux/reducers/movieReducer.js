@@ -2,7 +2,8 @@ import {
   DELETE_MOVIE,
   FETCH_MOVIES,
   FETCH_MOVIE_ID,
-  UPDATE_MOVIE
+  UPDATE_MOVIE,
+  REMOVE_SELECTED_MOVIE
 } from '../constants/constants';
 
 const intialState = {
@@ -48,6 +49,14 @@ export default function movieReducer(state = intialState, { type, payload }) {
         selectedMovie: payload
       };
     }
+    case REMOVE_SELECTED_MOVIE: {
+      return {
+        movies: state.movies,
+        filteredMovies: state.filteredMovies,
+        selectedMovie: payload
+      };
+    }
+
     default:
       return state;
   }

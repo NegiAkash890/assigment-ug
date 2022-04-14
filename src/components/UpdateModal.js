@@ -30,10 +30,10 @@ export default function VerticallyCenterModal({ view, updateView, movieId }) {
       title.current.value = '';
       return;
     }
-    updateView(false);
+    updateView(false, 0);
   };
   return (
-    <Modal onClose={() => updateView(false)} isOpen={view} isCentered>
+    <Modal onClose={() => updateView(false, 0)} isOpen={view} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Update Movie Title</ModalHeader>
