@@ -9,7 +9,9 @@ import {
   Text,
   Box,
   Grid,
-  GridItem
+  GridItem,
+  Skeleton,
+  SkeletonText
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,14 +32,35 @@ export default function InfoModal({ view, updateView }) {
         <ModalBody>
           <Grid templateColumns="repeat(5,1fr);" gap={2}>
             <GridItem colSpan={2}>
-              <img src={movie?.Poster} alt={movie?.Title} />
+              {movie?.Poster === undefined ? (
+                <Skeleton height="200px">
+                  <div>contents wrapped</div>
+                  <div>be visible</div>
+                </Skeleton>
+              ) : (
+                <img src={movie?.Poster} alt={movie?.Title} height="200px" />
+              )}
             </GridItem>
             <GridItem colSpan={3} fontSize="sm">
-              <Text>Actors: {movie?.Actors}</Text>
-              <Text>Length: {movie?.Runtime}</Text>
-              <Box>
-                <Text size="xs">{movie?.Plot}</Text>
-              </Box>
+              {movie?.Actors !== undefined ? (
+                <>
+                  <Text>
+                    <b>Actors: </b>
+                    {movie?.Actors}
+                  </Text>
+                  <Text>
+                    <b>Length:</b> {movie?.Runtime}
+                  </Text>
+                  <Box>
+                    <Text fontWeight="bold">Summary</Text>
+                    <Text size="xs">{movie?.Plot}</Text>
+                  </Box>
+                </>
+              ) : (
+                <Box padding="6" boxShadow="md" bg="white">
+                  <SkeletonText mt="4" noOfLines={4} spacing="6" />
+                </Box>
+              )}
             </GridItem>
           </Grid>
         </ModalBody>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FiTrash, FiEye } from 'react-icons/fi';
 import { BsPencilSquare } from 'react-icons/bs';
-
+import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import {
   Box,
   Heading,
@@ -68,14 +68,20 @@ function MovieList() {
         movieId={movieId}
       />
       <InfoModal mt={10} view={modalView[1]} updateView={updateView} />
-      <Button mt="10" w="150px" onClick={sortMovies}>
-        Sort By {order === false ? 'Ascending' : 'Descending'}
+      <Button
+        mt="10"
+        w="150px"
+        onClick={sortMovies}
+        bg="red.500"
+        color="white"
+        gap={2}
+      >
+        Sort {order === false ? <HiSortAscending /> : <HiSortDescending />}
       </Button>
-      <Flex justifyContent="space-between" m={3} mt={5}>
+      <Flex m={3} mt={5}>
         <Heading size="md" mt={10}>
-          Movie List
+          Searched Results
         </Heading>
-        <Text mt={10}>Showing 0 of {items.length} results</Text>
       </Flex>
       <TableContainer shadow="lg" rounded="md">
         <Table size="sm" variant="simple">
@@ -93,7 +99,12 @@ function MovieList() {
                 <Td>{movie.imdbID}</Td>
                 <Td>
                   <img
-                    src={movie.Poster}
+                    src={
+                      movie.Poster !== 'N/A'
+                        ? movie.Poster
+                        : 'https://via.placeholder.com/150 '
+                    }
+                    fallbackSrc="https://via.placeholder.com/150"
                     alt={movie.Title}
                     width="50px"
                     height="50px"
