@@ -3,7 +3,8 @@ import {
   FETCH_MOVIES,
   FETCH_MOVIE_ID,
   UPDATE_MOVIE,
-  REMOVE_SELECTED_MOVIE
+  REMOVE_SELECTED_MOVIE,
+  SORT_MOVIE_BY_TITLE
 } from '../constants/constants';
 
 const intialState = {
@@ -16,8 +17,8 @@ export default function movieReducer(state = intialState, { type, payload }) {
   switch (type) {
     case FETCH_MOVIES:
       return {
-        movies: [...payload],
-        filteredMovies: [...payload],
+        movies: payload !== undefined ? [...payload] : [],
+        filteredMovies: payload !== undefined ? [...payload] : [],
         selectedMovie: []
       };
     case DELETE_MOVIE: {
@@ -56,7 +57,24 @@ export default function movieReducer(state = intialState, { type, payload }) {
         selectedMovie: payload
       };
     }
-
+    case SORT_MOVIE_BY_TITLE: {
+      const newState = [...state.filteredMovies];
+      let dummyState = [];
+      /* eslint-disable */
+      dummyState = newState.sort((movieA, movieB) => {
+        let movieATitle = movieA.Title.split(' ').join('');
+        let movieBTitle = movieB.Title.split(' ').join('');
+        return movieATitle.localeCompare(movieBTitle);
+      });
+      if (payload === 'DESCEND') {
+        dummyState.reverse();
+      }
+      return {
+        movies: state.movies,
+        filteredMovies: dummyState,
+        selectedMovie: state.selectedMovie
+      };
+    }
     default:
       return state;
   }

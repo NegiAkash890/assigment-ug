@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Box,
   Button,
@@ -7,8 +7,19 @@ import {
   FormLabel,
   Input
 } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { fetchMovies } from '../redux/actions/movieActions';
 
 function Header() {
+  const dispatch = useDispatch();
+  const query = useRef('anime');
+  const handleClick = (type) => {
+    if (type === 'find') {
+      dispatch(fetchMovies(query.current.value));
+    } else {
+      query.current.value = ' ';
+    }
+  };
   return (
     <Flex
       bg="white"
@@ -27,14 +38,19 @@ function Header() {
       <Box>
         <FormControl>
           <FormLabel>Enter title</FormLabel>
-          <Input type="text" minW="400px" />
+          <Input type="search" minW="400px" ref={query} />
         </FormControl>
       </Box>
       <Flex>
-        <Button mr={1} bg="red.500" color="white">
+        <Button
+          mr={1}
+          bg="red.500"
+          color="white"
+          onClick={() => handleClick('find')}
+        >
           Find
         </Button>
-        <Button bg="red.500" color="white">
+        <Button bg="red.500" color="white" onClick={() => handleClick('reset')}>
           Reset
         </Button>
       </Flex>

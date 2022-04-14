@@ -3,14 +3,15 @@ import {
   FETCH_MOVIES,
   FETCH_MOVIE_ID,
   REMOVE_SELECTED_MOVIE,
-  UPDATE_MOVIE
+  UPDATE_MOVIE,
+  SORT_MOVIE_BY_TITLE
 } from '../constants/constants';
 
-const URL = 'https://www.omdbapi.com/?apikey=8c2e8707&type=movie&s=anime';
+const URL = 'https://www.omdbapi.com/?apikey=8c2e8707';
 const URL2 = 'http://www.omdbapi.com/?apikey=8c2e8707&i=';
 
-export const fetchMovies = () => async (dispatch) => {
-  const data = await fetch(URL)
+export const fetchMovies = (type = 'anime') => async (dispatch) => {
+  const data = await fetch(`${URL}&s=${type}`)
     .then((res) => res.json())
     .then((movieData) => movieData);
   dispatch({ type: FETCH_MOVIES, payload: data.Search });
@@ -35,4 +36,9 @@ export const deleteMovieById = (id) => ({
 export const updateMovieById = (data) => ({
   type: UPDATE_MOVIE,
   payload: data
+});
+
+export const sortMoviesByTitle = (order) => ({
+  type: SORT_MOVIE_BY_TITLE,
+  payload: order
 });

@@ -17,12 +17,17 @@ import {
   Button
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteMovieById, fetchMovieById } from '../redux/actions/movieActions';
+import {
+  deleteMovieById,
+  fetchMovieById,
+  sortMoviesByTitle
+} from '../redux/actions/movieActions';
 import UpdateModal from './UpdateModal';
 import InfoModal from './InfoModal';
 
 function MovieList() {
   const dispatch = useDispatch();
+  const [order, setOrder] = useState(false);
   const items = useSelector((state) => state.movies.filteredMovies);
   const [modalView, setModalView] = useState([false, false]);
   const [movieId, setMovieId] = useState(null);
@@ -45,8 +50,17 @@ function MovieList() {
       }
     }
   };
+
+  const sortMovies = () => {
+    if (order === false) {
+      dispatch(sortMoviesByTitle('ASCEND'));
+    } else {
+      dispatch(sortMoviesByTitle('DESCEND'));
+    }
+    setOrder((currentOrder) => !currentOrder);
+  };
   return (
-    <Box display="flex" flexDirection="column" minW="400px" p={10}>
+    <Box display="flex" flexDirection="column" p={10} pt="100px">
       <UpdateModal
         mt={10}
         view={modalView[0]}
@@ -54,7 +68,10 @@ function MovieList() {
         movieId={movieId}
       />
       <InfoModal mt={10} view={modalView[1]} updateView={updateView} />
-      <Flex justifyContent="space-between" m={3} mt={10}>
+      <Button mt="10" w="150px" onClick={sortMovies}>
+        Sort By {order === false ? 'Ascending' : 'Descending'}
+      </Button>
+      <Flex justifyContent="space-between" m={3} mt={5}>
         <Heading size="md" mt={10}>
           Movie List
         </Heading>
@@ -149,6 +166,9 @@ function MovieList() {
           </Tbody>
         </Table>
       </TableContainer>
+      <Text textAlign="center" mt={2}>
+        {items?.length === 0 ? 'No Result Found' : ' '}
+      </Text>
     </Box>
   );
 }
