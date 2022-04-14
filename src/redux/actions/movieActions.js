@@ -7,8 +7,8 @@ import {
   SORT_MOVIE_BY_TITLE
 } from '../constants/constants';
 
-const URL = 'https://www.omdbapi.com/?apikey=8c2e8707';
-const URL2 = 'http://www.omdbapi.com/?apikey=8c2e8707&i=';
+const baseURL = process.env.REACT_APP_BASEURL;
+const URL = `${baseURL}?apikey=${process.env.REACT_APP_APIKEY}`;
 
 export const fetchMovies = (type = 'anime') => async (dispatch) => {
   const data = await fetch(`${URL}&s=${type}`)
@@ -18,7 +18,7 @@ export const fetchMovies = (type = 'anime') => async (dispatch) => {
 };
 
 export const fetchMovieById = (id) => async (dispatch) => {
-  const data = await fetch(`${URL2}${id}`)
+  const data = await fetch(`${URL}&i=${id}`)
     .then((res) => res.json())
     .then((movieData) => movieData);
   dispatch({ type: FETCH_MOVIE_ID, payload: data });
